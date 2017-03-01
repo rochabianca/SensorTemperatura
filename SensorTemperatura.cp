@@ -115,7 +115,7 @@ void Display_Type()
  switch( family_code )
  {
  case 0x28:
- Lcd_Out(1, 1, "Temp.");
+ Lcd_Out(1, 1, "Temp:");
  break;
 
  case 0xFF:
