@@ -3,6 +3,7 @@ main
 	Lcd_Init
 		Delay_5500us
 		Delay_1us
+	UART1_Init
 	Lcd_Cmd
 		Delay_1us
 		Delay_5500us
@@ -29,6 +30,12 @@ main
 					Delay_5500us
 					Delay_50us
 		ByteToHex
+	LeTerminal
+		UART1_Data_Ready
+		UART1_Read_Text
+			UART1_Data_Ready
+			UART1_Read
+		UART1_Write
 	Read_Temperature
 		Ow_Reset
 			Delay_500us

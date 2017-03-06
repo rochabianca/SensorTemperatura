@@ -187,6 +187,18 @@ void Display_Temperature()
  Lcd_Chr_CP('C');
 }
 
+char uart_rd[10];
+
+void LeTerminal()
+{
+ char output[100];
+ if(UART1_Data_Ready())
+ {
+ uart1_read_text(uart_rd, "\r", 16);
+
+ UART1_Write(uart_rd);
+ }
+}
 
 void main()
 {
@@ -199,6 +211,8 @@ void main()
  TRISE.B2 = 1;
 
  Lcd_Init();
+ UART1_Init(9600);
+ delay_ms(100);
  Lcd_Cmd(_LCD_CLEAR);
  Lcd_Cmd(_LCD_CURSOR_OFF);
 
@@ -207,6 +221,7 @@ void main()
  {
  Resolution();
  Display_Type();
+ LeTerminal();
 
  switch( family_code )
  {
