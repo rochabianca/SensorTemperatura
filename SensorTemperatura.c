@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 // LCD
 sbit LCD_RS at LATB4_bit;
 sbit LCD_EN at LATB5_bit;
@@ -31,7 +33,7 @@ char family_code;
 char family_code_hex[2];
 
 char *text = "00.00";
-
+char Tmax, *Tmin = "23";
 char sernum[8];
 char sernum_hex[2];
 int i;
@@ -130,9 +132,28 @@ void Display_Type()
 }
 
 //Verifica se as temperaturas limites (abaixo de 21°C ou acima de 29°C) não foram atingidas
-void Atingiu_Limite(char *text)
+void Atingiu_Limite(char *text, char *min)
 {
-     if(text[1] == '2' && text[2] == '1' || text[1] == '1' || text[1] == '0')
+     if(text[1] == min[0] && text[2] == min[1])
+     {
+       Lcd_Out(2,1, "Min. Atingido");
+
+     }
+     /*if(text[1] == max[0] && text[2] == max[1])
+     {
+      Lcd_Out(2,1, "Max. Atingido");
+
+     } */
+     if(text[1] == '2' && text[2] == '9' || text[1] == '3')
+     {
+      Lcd_Out(2,1, "Max. Atingido");
+
+     }
+}
+
+void Limite_Padrao(char *text)
+{
+     if(text[1] == '2' && text[2] == '1' || text[1] == '1')
      {
        Lcd_Out(2,1, "Min. Atingido");
 
@@ -178,7 +199,7 @@ void Display_Temperature()
      text[4] =  temp_fraction/1000    + 48;
 
      //Verifica se os limites de temperatura não foram atingidos
-     Atingiu_Limite(text);
+     Atingiu_Limite(text, Tmin);
      //Mostra a temperatura no LCD
      Lcd_Out(1, 7, text);
      
@@ -188,16 +209,29 @@ void Display_Temperature()
 
 char uart_rd[10];
 
-void LeTerminal()
+
+char TempMax()
 {
-     char output[100];
-     if(UART1_Data_Ready())
-     {
-       uart1_read_text(uart_rd, "\r", 16);
-        //uart_rd = UART1_Read();     // read the received data,
-        UART1_Write(uart_rd);
-     }
+      char MaxT;
+      UART1_Write_Text("Temperatura Maxima: <Enter para enviar>\n");
+      if (UART1_Data_Ready() == 1) {
+        UART1_Read_Text(MaxT, "\r", 10);
+        UART1_Write_Text(MaxT);
+      }
+      return MaxT;
 }
+
+char TempMin()
+{
+      char MinT;
+      UART1_Write_Text("Temperatura Minima: <Enter para enviar>\n");
+      if (UART1_Data_Ready() == 1) {
+        UART1_Read_Text(MinT, "\r", 10);
+        UART1_Write_Text(MinT);
+      }
+      return MinT;
+}
+
 
 void main()
 {
@@ -214,13 +248,14 @@ void main()
  delay_ms(100);
  Lcd_Cmd(_LCD_CLEAR);                           //Limpa o LCD
  Lcd_Cmd(_LCD_CURSOR_OFF);                      //Desativa o cursor
- 
+ //Tmax = TempMax();
+ Tmin = TempMin();
 
   do
   {
     Resolution();
     Display_Type();
-    LeTerminal();
+
 
     switch( family_code )
     {

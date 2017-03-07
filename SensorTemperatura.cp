@@ -1,5 +1,6 @@
-#line 1 "C:/Users/bianc/Documents/PIC/SensorTemperatura/SensorTemperatura.c"
-
+#line 1 "C:/Users/bianc_000/Documents/PIC/SensorTemperatura-master-1/SensorTemperatura.c"
+#line 1 "c:/users/bianc_000/documents/mikroelektronika/mikroc pro for pic/include/stdio.h"
+#line 4 "C:/Users/bianc_000/Documents/PIC/SensorTemperatura-master-1/SensorTemperatura.c"
 sbit LCD_RS at LATB4_bit;
 sbit LCD_EN at LATB5_bit;
 sbit LCD_D4 at LATB0_bit;
@@ -32,7 +33,7 @@ char family_code;
 char family_code_hex[2];
 
 char *text = "00.00";
-
+char Tmax, *Tmin = "23";
 char sernum[8];
 char sernum_hex[2];
 int i;
@@ -131,9 +132,24 @@ void Display_Type()
 }
 
 
-void Atingiu_Limite(char *text)
+void Atingiu_Limite(char *text, char *min)
 {
- if(text[1] == '2' && text[2] == '1' || text[1] == '1' || text[1] == '0')
+ if(text[1] == min[0] && text[2] == min[1])
+ {
+ Lcd_Out(2,1, "Min. Atingido");
+
+ }
+#line 147 "C:/Users/bianc_000/Documents/PIC/SensorTemperatura-master-1/SensorTemperatura.c"
+ if(text[1] == '2' && text[2] == '9' || text[1] == '3')
+ {
+ Lcd_Out(2,1, "Max. Atingido");
+
+ }
+}
+
+void Limite_Padrao(char *text)
+{
+ if(text[1] == '2' && text[2] == '1' || text[1] == '1')
  {
  Lcd_Out(2,1, "Min. Atingido");
 
@@ -179,7 +195,7 @@ void Display_Temperature()
  text[4] = temp_fraction/1000 + 48;
 
 
- Atingiu_Limite(text);
+ Atingiu_Limite(text, Tmin);
 
  Lcd_Out(1, 7, text);
 
@@ -189,16 +205,29 @@ void Display_Temperature()
 
 char uart_rd[10];
 
-void LeTerminal()
-{
- char output[100];
- if(UART1_Data_Ready())
- {
- uart1_read_text(uart_rd, "\r", 16);
 
- UART1_Write(uart_rd);
+char TempMax()
+{
+ char MaxT;
+ UART1_Write_Text("Temperatura Maxima: <Enter para enviar>\n");
+ if (UART1_Data_Ready() == 1) {
+ UART1_Read_Text(MaxT, "\r", 10);
+ UART1_Write_Text(MaxT);
  }
+ return MaxT;
 }
+
+char TempMin()
+{
+ char MinT;
+ UART1_Write_Text("Temperatura Minima: <Enter para enviar>\n");
+ if (UART1_Data_Ready() == 1) {
+ UART1_Read_Text(MinT, "\r", 10);
+ UART1_Write_Text(MinT);
+ }
+ return MinT;
+}
+
 
 void main()
 {
@@ -216,12 +245,13 @@ void main()
  Lcd_Cmd(_LCD_CLEAR);
  Lcd_Cmd(_LCD_CURSOR_OFF);
 
+ Tmin = TempMin();
 
  do
  {
  Resolution();
  Display_Type();
- LeTerminal();
+
 
  switch( family_code )
  {

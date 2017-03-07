@@ -8,6 +8,13 @@ main
 		Delay_1us
 		Delay_5500us
 		Delay_50us
+	TempMin
+		UART1_Write_Text
+			UART1_Write
+		UART1_Data_Ready
+		UART1_Read_Text
+			UART1_Data_Ready
+			UART1_Read
 	Resolution
 		Ow_Reset
 			Delay_500us
@@ -30,12 +37,6 @@ main
 					Delay_5500us
 					Delay_50us
 		ByteToHex
-	LeTerminal
-		UART1_Data_Ready
-		UART1_Read_Text
-			UART1_Data_Ready
-			UART1_Read
-		UART1_Write
 	Read_Temperature
 		Ow_Reset
 			Delay_500us

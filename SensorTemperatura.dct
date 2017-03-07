@@ -4153,8 +4153,8 @@ left_to_right_16bit
 length
 length
 length
-leterminal
 lf
+limite_padrao
 linestride
 linestride
 linestride
@@ -5555,6 +5555,8 @@ temp
 temp_res_b
 temp_res_s
 temp_resolution
+tempmax
+tempmin
 text
 tft_16bit_circle
 tft_16bit_color16bittorgb
@@ -5717,6 +5719,8 @@ time
 time_datetoepoch
 time_epochtodate
 time_jd1970
+tmax
+tmin
 tmr0h
 tmr0ie
 tmr0ie_bit
