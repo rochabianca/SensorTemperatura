@@ -1,4 +1,4 @@
-#line 1 "C:/Users/bianc/Documents/PIC/SensorTemperatura/SensorTemperatura.c"
+#line 1 "C:/Users/bianc_000/Documents/PIC/SensorTemperatura/SensorTemperatura.c"
 
 sbit LCD_RS at LATB4_bit;
 sbit LCD_EN at LATB5_bit;
@@ -34,7 +34,7 @@ char sernum[8];
 char sernum_hex[2];
 int i;
 int colona;
-
+ char MinT[100];
 
 void Resolution()
 {
@@ -132,13 +132,13 @@ void Atingiu_Limite(char *text, char *min)
 {
  if(text[1] == min[0] && text[2] == min[1])
  {
- Lcd_Out(2,1, "Min. Atingido");
+ Lcd_Out(2,1, "Max. Atingido");
 
  }
-#line 142 "C:/Users/bianc/Documents/PIC/SensorTemperatura/SensorTemperatura.c"
- if(text[1] == '2' && text[2] == '9' || text[1] == '3')
+
+ if(text[1] == min[2] && text[2] == '9' || text[1] == min[3])
  {
- Lcd_Out(2,1, "Max. Atingido");
+ Lcd_Out(2,1, "Min. Atingido");
 
  }
 }
@@ -191,7 +191,7 @@ void Display_Temperature()
  text[4] = temp_fraction/1000 + 48;
 
 
- Limite_Padrao(text);
+ Atingiu_Limite(text, MinT);
 
  Lcd_Out(1, 7, text);
 
@@ -222,34 +222,64 @@ void TempMin()
  UART1_Write_Text(MinT);
  }
 }
+char valor[100];
+
+void teste()
+ {
+ UART1_Write(10);
+ UART1_Write(13);
+
+
+ if (UART1_Data_Ready()) {
+ UART1_Write_Text("entrou em teste()");
+ uart1_read_text(valor, "\r", 16);
+ lcd_cmd(_LCD_CLEAR);
+ lcd_out(1,1,valor);
+#line 240 "C:/Users/bianc_000/Documents/PIC/SensorTemperatura/SensorTemperatura.c"
+ }
+
+ }
 
 
 void main()
 {
- CMCON |=7;
+ UART1_Init(9600);
+ delay_ms(100);
+
  ADCON1 = 0x0D;
 
 
+
+
  PORTA = 0 ;
- TRISD = 0x00;
+
  TRISA = 0x03;
+
+
  TRISE.B2 = 1;
 
+
+
  Lcd_Init();
- UART1_Init(9600);
- TRISD7_bit = 1;
+
+
 
  delay_ms(100);
  Lcd_Cmd(_LCD_CLEAR);
  Lcd_Cmd(_LCD_CURSOR_OFF);
 
- TempMin();
+
+ UART1_Write_Text("Temperaturas Maximas e minimas: <exemplo: 24,21. enter para enviar>");
 
  do
  {
  Resolution();
  Display_Type();
-
+ if (UART1_Data_Ready() == 1) {
+ UART1_Write_Text("data ready");
+ UART1_Read_Text(MinT, "\r", 10);
+ UART1_Write_Text(MinT);
+ }
 
  switch( family_code )
  {

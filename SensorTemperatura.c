@@ -33,7 +33,7 @@ char sernum[8];
 char sernum_hex[2];
 int i;
 int colona;
-
+ char MinT[100];
 
 void Resolution()
 {
@@ -131,17 +131,13 @@ void Atingiu_Limite(char *text, char *min)
 {
      if(text[1] == min[0] && text[2] == min[1])
      {
-       Lcd_Out(2,1, "Min. Atingido");
+       Lcd_Out(2,1, "Max. Atingido");
 
      }
-     /*if(text[1] == max[0] && text[2] == max[1])
-     {
-      Lcd_Out(2,1, "Max. Atingido");
 
-     } */
-     if(text[1] == '2' && text[2] == '9' || text[1] == '3')
+     if(text[1] == min[2] && text[2] == '9' || text[1] == min[3])
      {
-      Lcd_Out(2,1, "Max. Atingido");
+      Lcd_Out(2,1, "Min. Atingido");
 
      }
 }
@@ -194,7 +190,7 @@ void Display_Temperature()
      text[4] =  temp_fraction/1000    + 48;
 
      //Verifica se os limites de temperatura não foram atingidos
-     Limite_Padrao(text);
+     Atingiu_Limite(text, MinT);
      //Mostra a temperatura no LCD
      Lcd_Out(1, 7, text);
      
@@ -225,34 +221,66 @@ void TempMin()
         UART1_Write_Text(MinT);
       }
 }
+char valor[100];
+
+void teste()
+ {
+       UART1_Write(10);
+       UART1_Write(13);
+
+       //UART1_Write_Text("entrou em teste()");
+       if (UART1_Data_Ready()) {
+       UART1_Write_Text("entrou em teste()");
+        uart1_read_text(valor, "\r", 16);
+        lcd_cmd(_LCD_CLEAR);//limpa o lcd
+        lcd_out(1,1,valor);     // if data is received
+        /*UART1_Write_Text("entrou no if");
+        UART1_Read_Text(output, "OK", 10);    // reads text until 'OK' is found
+        UART1_Write_Text(output);             // sends back text  */
+     }
+     
+ }
 
 
 void main()
 {
- CMCON |=7;
+   UART1_Init(9600);
+ delay_ms(100);
+ //CMCON |=7;
  ADCON1 = 0x0D;
- 
+ //ADCON0 = 0x0D;
+ //INTCON = 0xC0;
+
  //OSCCON = 0xF0;
  PORTA = 0 ;
- TRISD = 0x00;
+ //TRISD = 0x00;
  TRISA = 0x03;
+ //TRISC = 0x00;
+ //TRISC6_bit = 0;
  TRISE.B2 = 1;
+ //ANSEL = %00111111
 
+ 
  Lcd_Init();                                    //Inicia o LCD
- UART1_Init(9600);
- TRISD7_bit = 1;
+
+
  //ANSD7_bit = 0;
  delay_ms(100);
  Lcd_Cmd(_LCD_CLEAR);                           //Limpa o LCD
  Lcd_Cmd(_LCD_CURSOR_OFF);                      //Desativa o cursor
  //Tmax = TempMax();
- TempMin();
+ //TempMin();
+  UART1_Write_Text("Temperaturas Maximas e minimas: <exemplo: 24,21. enter para enviar>");
 
   do
   {
     Resolution();
     Display_Type();
-
+    if (UART1_Data_Ready() == 1) {
+        UART1_Write_Text("data ready");
+        UART1_Read_Text(MinT, "\r", 10);
+        UART1_Write_Text(MinT);
+      }
 
     switch( family_code )
     {

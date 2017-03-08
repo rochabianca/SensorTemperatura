@@ -102,10 +102,10 @@ L_Resolution9:
 	XORWF       _i+1, 0 
 	SUBWF       R0, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__Resolution60
+	GOTO        L__Resolution63
 	MOVF        _i+0, 0 
 	SUBLW       7
-L__Resolution60:
+L__Resolution63:
 	BTFSS       STATUS+0, 0 
 	GOTO        L_Resolution10
 	MOVLW       _sernum+0
@@ -236,10 +236,10 @@ L_Display_SerialNumber13:
 	XORWF       Display_SerialNumber_i_L0+1, 0 
 	SUBWF       R0, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__Display_SerialNumber63
+	GOTO        L__Display_SerialNumber66
 	MOVF        Display_SerialNumber_i_L0+0, 0 
 	SUBLW       7
-L__Display_SerialNumber63:
+L__Display_SerialNumber66:
 	BTFSS       STATUS+0, 0 
 	GOTO        L_Display_SerialNumber14
 	MOVLW       2
@@ -375,7 +375,7 @@ _Atingiu_Limite:
 	XORWF       POSTINC2+0, 0 
 	BTFSS       STATUS+0, 2 
 	GOTO        L_Atingiu_Limite23
-L__Atingiu_Limite54:
+L__Atingiu_Limite57:
 	MOVLW       2
 	MOVWF       FARG_Lcd_Out_row+0 
 	MOVLW       1
@@ -392,10 +392,16 @@ L_Atingiu_Limite23:
 	MOVLW       0
 	ADDWFC      FARG_Atingiu_Limite_text+1, 0 
 	MOVWF       FSR0H 
+	MOVLW       2
+	ADDWF       FARG_Atingiu_Limite_min+0, 0 
+	MOVWF       FSR2 
+	MOVLW       0
+	ADDWFC      FARG_Atingiu_Limite_min+1, 0 
+	MOVWF       FSR2H 
 	MOVF        POSTINC0+0, 0 
-	XORLW       50
+	XORWF       POSTINC2+0, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__Atingiu_Limite53
+	GOTO        L__Atingiu_Limite56
 	MOVLW       2
 	ADDWF       FARG_Atingiu_Limite_text+0, 0 
 	MOVWF       FSR0 
@@ -405,21 +411,29 @@ L_Atingiu_Limite23:
 	MOVF        POSTINC0+0, 0 
 	XORLW       57
 	BTFSS       STATUS+0, 2 
-	GOTO        L__Atingiu_Limite53
-	GOTO        L__Atingiu_Limite52
-L__Atingiu_Limite53:
+	GOTO        L__Atingiu_Limite56
+	GOTO        L__Atingiu_Limite55
+L__Atingiu_Limite56:
 	MOVLW       1
 	ADDWF       FARG_Atingiu_Limite_text+0, 0 
-	MOVWF       FSR0 
+	MOVWF       R1 
 	MOVLW       0
 	ADDWFC      FARG_Atingiu_Limite_text+1, 0 
-	MOVWF       FSR0H 
+	MOVWF       R2 
+	MOVLW       3
+	ADDWF       FARG_Atingiu_Limite_min+0, 0 
+	MOVWF       FSR2 
+	MOVLW       0
+	ADDWFC      FARG_Atingiu_Limite_min+1, 0 
+	MOVWF       FSR2H 
+	MOVFF       R1, FSR0
+	MOVFF       R2, FSR0H
 	MOVF        POSTINC0+0, 0 
-	XORLW       51
+	XORWF       POSTINC2+0, 0 
 	BTFSC       STATUS+0, 2 
-	GOTO        L__Atingiu_Limite52
+	GOTO        L__Atingiu_Limite55
 	GOTO        L_Atingiu_Limite28
-L__Atingiu_Limite52:
+L__Atingiu_Limite55:
 	MOVLW       2
 	MOVWF       FARG_Lcd_Out_row+0 
 	MOVLW       1
@@ -445,7 +459,7 @@ _Limite_Padrao:
 	MOVF        POSTINC0+0, 0 
 	XORLW       50
 	BTFSS       STATUS+0, 2 
-	GOTO        L__Limite_Padrao58
+	GOTO        L__Limite_Padrao61
 	MOVLW       2
 	ADDWF       FARG_Limite_Padrao_text+0, 0 
 	MOVWF       FSR0 
@@ -455,9 +469,9 @@ _Limite_Padrao:
 	MOVF        POSTINC0+0, 0 
 	XORLW       49
 	BTFSS       STATUS+0, 2 
-	GOTO        L__Limite_Padrao58
-	GOTO        L__Limite_Padrao57
-L__Limite_Padrao58:
+	GOTO        L__Limite_Padrao61
+	GOTO        L__Limite_Padrao60
+L__Limite_Padrao61:
 	MOVLW       1
 	ADDWF       FARG_Limite_Padrao_text+0, 0 
 	MOVWF       FSR0 
@@ -467,9 +481,9 @@ L__Limite_Padrao58:
 	MOVF        POSTINC0+0, 0 
 	XORLW       49
 	BTFSC       STATUS+0, 2 
-	GOTO        L__Limite_Padrao57
+	GOTO        L__Limite_Padrao60
 	GOTO        L_Limite_Padrao33
-L__Limite_Padrao57:
+L__Limite_Padrao60:
 	MOVLW       2
 	MOVWF       FARG_Lcd_Out_row+0 
 	MOVLW       1
@@ -489,7 +503,7 @@ L_Limite_Padrao33:
 	MOVF        POSTINC0+0, 0 
 	XORLW       50
 	BTFSS       STATUS+0, 2 
-	GOTO        L__Limite_Padrao56
+	GOTO        L__Limite_Padrao59
 	MOVLW       2
 	ADDWF       FARG_Limite_Padrao_text+0, 0 
 	MOVWF       FSR0 
@@ -499,9 +513,9 @@ L_Limite_Padrao33:
 	MOVF        POSTINC0+0, 0 
 	XORLW       57
 	BTFSS       STATUS+0, 2 
-	GOTO        L__Limite_Padrao56
-	GOTO        L__Limite_Padrao55
-L__Limite_Padrao56:
+	GOTO        L__Limite_Padrao59
+	GOTO        L__Limite_Padrao58
+L__Limite_Padrao59:
 	MOVLW       1
 	ADDWF       FARG_Limite_Padrao_text+0, 0 
 	MOVWF       FSR0 
@@ -511,9 +525,9 @@ L__Limite_Padrao56:
 	MOVF        POSTINC0+0, 0 
 	XORLW       51
 	BTFSC       STATUS+0, 2 
-	GOTO        L__Limite_Padrao55
+	GOTO        L__Limite_Padrao58
 	GOTO        L_Limite_Padrao38
-L__Limite_Padrao55:
+L__Limite_Padrao58:
 	MOVLW       2
 	MOVWF       FARG_Lcd_Out_row+0 
 	MOVLW       1
@@ -560,14 +574,14 @@ L_Display_Temperature39:
 	MOVF        Display_Temperature_temp2write_L0+1, 0 
 	MOVWF       R1 
 	MOVF        R2, 0 
-L__Display_Temperature68:
-	BZ          L__Display_Temperature69
+L__Display_Temperature71:
+	BZ          L__Display_Temperature72
 	RRCF        R1, 1 
 	RRCF        R0, 1 
 	BCF         R1, 7 
 	ADDLW       255
-	GOTO        L__Display_Temperature68
-L__Display_Temperature69:
+	GOTO        L__Display_Temperature71
+L__Display_Temperature72:
 	MOVF        R0, 0 
 	MOVWF       Display_Temperature_temp_whole_L0+0 
 	MOVLW       100
@@ -643,14 +657,14 @@ L_Display_Temperature40:
 	MOVF        Display_Temperature_temp2write_L0+1, 0 
 	MOVWF       R1 
 	MOVF        R2, 0 
-L__Display_Temperature70:
-	BZ          L__Display_Temperature71
+L__Display_Temperature73:
+	BZ          L__Display_Temperature74
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	RLCF        R1, 1 
 	ADDLW       255
-	GOTO        L__Display_Temperature70
-L__Display_Temperature71:
+	GOTO        L__Display_Temperature73
+L__Display_Temperature74:
 	MOVLW       15
 	ANDWF       R0, 1 
 	MOVLW       0
@@ -678,10 +692,14 @@ L__Display_Temperature71:
 	MOVF        R0, 0 
 	MOVWF       POSTINC1+0 
 	MOVF        _text+0, 0 
-	MOVWF       FARG_Limite_Padrao_text+0 
+	MOVWF       FARG_Atingiu_Limite_text+0 
 	MOVF        _text+1, 0 
-	MOVWF       FARG_Limite_Padrao_text+1 
-	CALL        _Limite_Padrao+0, 0
+	MOVWF       FARG_Atingiu_Limite_text+1 
+	MOVLW       _MinT+0
+	MOVWF       FARG_Atingiu_Limite_min+0 
+	MOVLW       hi_addr(_MinT+0)
+	MOVWF       FARG_Atingiu_Limite_min+1 
+	CALL        _Atingiu_Limite+0, 0
 	MOVLW       1
 	MOVWF       FARG_Lcd_Out_row+0 
 	MOVLW       7
@@ -772,38 +790,93 @@ L_end_TempMin:
 	RETURN      0
 ; end of _TempMin
 
+_teste:
+
+	MOVLW       10
+	MOVWF       FARG_UART1_Write_data_+0 
+	CALL        _UART1_Write+0, 0
+	MOVLW       13
+	MOVWF       FARG_UART1_Write_data_+0 
+	CALL        _UART1_Write+0, 0
+	CALL        _UART1_Data_Ready+0, 0
+	MOVF        R0, 1 
+	BTFSC       STATUS+0, 2 
+	GOTO        L_teste43
+	MOVLW       ?lstr14_SensorTemperatura+0
+	MOVWF       FARG_UART1_Write_Text_uart_text+0 
+	MOVLW       hi_addr(?lstr14_SensorTemperatura+0)
+	MOVWF       FARG_UART1_Write_Text_uart_text+1 
+	CALL        _UART1_Write_Text+0, 0
+	MOVLW       _valor+0
+	MOVWF       FARG_UART1_Read_Text_Output+0 
+	MOVLW       hi_addr(_valor+0)
+	MOVWF       FARG_UART1_Read_Text_Output+1 
+	MOVLW       ?lstr15_SensorTemperatura+0
+	MOVWF       FARG_UART1_Read_Text_Delimiter+0 
+	MOVLW       hi_addr(?lstr15_SensorTemperatura+0)
+	MOVWF       FARG_UART1_Read_Text_Delimiter+1 
+	MOVLW       16
+	MOVWF       FARG_UART1_Read_Text_Attempts+0 
+	CALL        _UART1_Read_Text+0, 0
+	MOVLW       1
+	MOVWF       FARG_Lcd_Cmd_out_char+0 
+	CALL        _Lcd_Cmd+0, 0
+	MOVLW       1
+	MOVWF       FARG_Lcd_Out_row+0 
+	MOVLW       1
+	MOVWF       FARG_Lcd_Out_column+0 
+	MOVLW       _valor+0
+	MOVWF       FARG_Lcd_Out_text+0 
+	MOVLW       hi_addr(_valor+0)
+	MOVWF       FARG_Lcd_Out_text+1 
+	CALL        _Lcd_Out+0, 0
+L_teste43:
+L_end_teste:
+	RETURN      0
+; end of _teste
+
 _main:
 
-	MOVLW       7
-	IORWF       CMCON+0, 1 
-	MOVLW       13
-	MOVWF       ADCON1+0 
-	CLRF        PORTA+0 
-	CLRF        TRISD+0 
-	MOVLW       3
-	MOVWF       TRISA+0 
-	BSF         TRISE+0, 2 
-	CALL        _Lcd_Init+0, 0
 	BSF         BAUDCON+0, 3, 0
 	CLRF        SPBRGH+0 
 	MOVLW       207
 	MOVWF       SPBRG+0 
 	BSF         TXSTA+0, 2, 0
 	CALL        _UART1_Init+0, 0
-	BSF         TRISD7_bit+0, BitPos(TRISD7_bit+0) 
 	MOVLW       2
 	MOVWF       R11, 0
 	MOVLW       4
 	MOVWF       R12, 0
 	MOVLW       186
 	MOVWF       R13, 0
-L_main43:
+L_main44:
 	DECFSZ      R13, 1, 1
-	BRA         L_main43
+	BRA         L_main44
 	DECFSZ      R12, 1, 1
-	BRA         L_main43
+	BRA         L_main44
 	DECFSZ      R11, 1, 1
-	BRA         L_main43
+	BRA         L_main44
+	NOP
+	MOVLW       13
+	MOVWF       ADCON1+0 
+	CLRF        PORTA+0 
+	MOVLW       3
+	MOVWF       TRISA+0 
+	BSF         TRISE+0, 2 
+	CALL        _Lcd_Init+0, 0
+	MOVLW       2
+	MOVWF       R11, 0
+	MOVLW       4
+	MOVWF       R12, 0
+	MOVLW       186
+	MOVWF       R13, 0
+L_main45:
+	DECFSZ      R13, 1, 1
+	BRA         L_main45
+	DECFSZ      R12, 1, 1
+	BRA         L_main45
+	DECFSZ      R11, 1, 1
+	BRA         L_main45
 	NOP
 	MOVLW       1
 	MOVWF       FARG_Lcd_Cmd_out_char+0 
@@ -811,39 +884,70 @@ L_main43:
 	MOVLW       12
 	MOVWF       FARG_Lcd_Cmd_out_char+0 
 	CALL        _Lcd_Cmd+0, 0
-	CALL        _TempMin+0, 0
-L_main44:
+	MOVLW       ?lstr16_SensorTemperatura+0
+	MOVWF       FARG_UART1_Write_Text_uart_text+0 
+	MOVLW       hi_addr(?lstr16_SensorTemperatura+0)
+	MOVWF       FARG_UART1_Write_Text_uart_text+1 
+	CALL        _UART1_Write_Text+0, 0
+L_main46:
 	CALL        _Resolution+0, 0
 	CALL        _Display_Type+0, 0
-	GOTO        L_main47
+	CALL        _UART1_Data_Ready+0, 0
+	MOVF        R0, 0 
+	XORLW       1
+	BTFSS       STATUS+0, 2 
+	GOTO        L_main49
+	MOVLW       ?lstr17_SensorTemperatura+0
+	MOVWF       FARG_UART1_Write_Text_uart_text+0 
+	MOVLW       hi_addr(?lstr17_SensorTemperatura+0)
+	MOVWF       FARG_UART1_Write_Text_uart_text+1 
+	CALL        _UART1_Write_Text+0, 0
+	MOVLW       _MinT+0
+	MOVWF       FARG_UART1_Read_Text_Output+0 
+	MOVLW       hi_addr(_MinT+0)
+	MOVWF       FARG_UART1_Read_Text_Output+1 
+	MOVLW       ?lstr18_SensorTemperatura+0
+	MOVWF       FARG_UART1_Read_Text_Delimiter+0 
+	MOVLW       hi_addr(?lstr18_SensorTemperatura+0)
+	MOVWF       FARG_UART1_Read_Text_Delimiter+1 
+	MOVLW       10
+	MOVWF       FARG_UART1_Read_Text_Attempts+0 
+	CALL        _UART1_Read_Text+0, 0
+	MOVLW       _MinT+0
+	MOVWF       FARG_UART1_Write_Text_uart_text+0 
+	MOVLW       hi_addr(_MinT+0)
+	MOVWF       FARG_UART1_Write_Text_uart_text+1 
+	CALL        _UART1_Write_Text+0, 0
 L_main49:
+	GOTO        L_main50
+L_main52:
 	CALL        _Read_Temperature+0, 0
 	CALL        _Display_Temperature+0, 0
-	GOTO        L_main48
+	GOTO        L_main51
+L_main53:
+	GOTO        L_main51
 L_main50:
-	GOTO        L_main48
-L_main47:
 	MOVF        _family_code+0, 0 
 	XORLW       40
 	BTFSC       STATUS+0, 2 
-	GOTO        L_main49
-	GOTO        L_main50
-L_main48:
+	GOTO        L_main52
+	GOTO        L_main53
+L_main51:
 	MOVLW       2
 	MOVWF       R11, 0
 	MOVLW       4
 	MOVWF       R12, 0
 	MOVLW       186
 	MOVWF       R13, 0
-L_main51:
+L_main54:
 	DECFSZ      R13, 1, 1
-	BRA         L_main51
+	BRA         L_main54
 	DECFSZ      R12, 1, 1
-	BRA         L_main51
+	BRA         L_main54
 	DECFSZ      R11, 1, 1
-	BRA         L_main51
+	BRA         L_main54
 	NOP
-	GOTO        L_main44
+	GOTO        L_main46
 L_end_main:
 	GOTO        $+0
 ; end of _main

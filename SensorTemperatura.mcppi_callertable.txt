@@ -1,20 +1,15 @@
 main
 	__CC2DW
+	UART1_Init
 	Lcd_Init
 		Delay_5500us
 		Delay_1us
-	UART1_Init
 	Lcd_Cmd
 		Delay_1us
 		Delay_5500us
 		Delay_50us
-	TempMin
-		UART1_Write_Text
-			UART1_Write
-		UART1_Data_Ready
-		UART1_Read_Text
-			UART1_Data_Ready
-			UART1_Read
+	UART1_Write_Text
+		UART1_Write
 	Resolution
 		Ow_Reset
 			Delay_500us
@@ -37,6 +32,10 @@ main
 					Delay_5500us
 					Delay_50us
 		ByteToHex
+	UART1_Data_Ready
+	UART1_Read_Text
+		UART1_Data_Ready
+		UART1_Read
 	Read_Temperature
 		Ow_Reset
 			Delay_500us
@@ -51,7 +50,7 @@ main
 		Div_8X8_U
 		Mul_16X16_U
 		Div_16X16_U
-		Limite_Padrao
+		Atingiu_Limite
 			Lcd_Out
 				Lcd_Cmd
 					Delay_1us

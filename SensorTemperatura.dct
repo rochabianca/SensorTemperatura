@@ -4234,6 +4234,7 @@ min
 minor
 minor
 minor
+mint
 mm_error_
 mm_freememtable
 mm_init
@@ -5557,6 +5558,7 @@ temp_res_s
 temp_resolution
 tempmax
 tempmin
+teste
 text
 tft_16bit_circle
 tft_16bit_color16bittorgb
@@ -6024,6 +6026,7 @@ utrdis_bit
 val
 val
 val
+valor
 vcfg0
 vcfg0_bit
 vcfg1
