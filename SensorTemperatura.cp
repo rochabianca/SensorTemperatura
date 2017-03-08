@@ -34,7 +34,7 @@ char sernum[8];
 char sernum_hex[2];
 int i;
 int colona;
- char MinT[100];
+ char *MinT = "00,00";
 
 void Resolution()
 {
@@ -132,13 +132,13 @@ void Atingiu_Limite(char *text, char *min)
 {
  if(text[1] == min[0] && text[2] == min[1])
  {
- Lcd_Out(2,1, "Max. Atingido");
+ Lcd_Out(2,1, "Min. Atingido");
 
  }
 
  if(text[1] == min[2] && text[2] == '9' || text[1] == min[3])
  {
- Lcd_Out(2,1, "Min. Atingido");
+ Lcd_Out(2,1, "Max. Atingido");
 
  }
 }
@@ -191,6 +191,7 @@ void Display_Temperature()
  text[4] = temp_fraction/1000 + 48;
 
 
+
  Atingiu_Limite(text, MinT);
 
  Lcd_Out(1, 7, text);
@@ -235,7 +236,7 @@ void teste()
  uart1_read_text(valor, "\r", 16);
  lcd_cmd(_LCD_CLEAR);
  lcd_out(1,1,valor);
-#line 240 "C:/Users/bianc_000/Documents/PIC/SensorTemperatura/SensorTemperatura.c"
+#line 241 "C:/Users/bianc_000/Documents/PIC/SensorTemperatura/SensorTemperatura.c"
  }
 
  }
@@ -269,14 +270,14 @@ void main()
  Lcd_Cmd(_LCD_CURSOR_OFF);
 
 
- UART1_Write_Text("Temperaturas Maximas e minimas: <exemplo: 24,21. enter para enviar>");
+ UART1_Write_Text("Temperaturas Minima e maxima: <exemplo: 16,21. enter para enviar>");
 
  do
  {
  Resolution();
  Display_Type();
  if (UART1_Data_Ready() == 1) {
- UART1_Write_Text("data ready");
+
  UART1_Read_Text(MinT, "\r", 10);
  UART1_Write_Text(MinT);
  }
