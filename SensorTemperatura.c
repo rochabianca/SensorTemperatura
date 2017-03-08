@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 // LCD
 sbit LCD_RS at LATB4_bit;
 sbit LCD_EN at LATB5_bit;
@@ -23,8 +21,6 @@ const unsigned short TEMP_RES_S = 9;
 unsigned short TEMP_RESOLUTION;
 unsigned temp;
 
-
-
 // family_code: código correspondente ao sensor
 // Ex: 0x28: DS18B20 (sensor usado)
 // 0x10: DS18S20
@@ -33,7 +29,6 @@ char family_code;
 char family_code_hex[2];
 
 char *text = "00.00";
-char Tmax, *Tmin = "23";
 char sernum[8];
 char sernum_hex[2];
 int i;
@@ -199,7 +194,7 @@ void Display_Temperature()
      text[4] =  temp_fraction/1000    + 48;
 
      //Verifica se os limites de temperatura não foram atingidos
-     Atingiu_Limite(text, Tmin);
+     Limite_Padrao(text);
      //Mostra a temperatura no LCD
      Lcd_Out(1, 7, text);
      
@@ -210,26 +205,25 @@ void Display_Temperature()
 char uart_rd[10];
 
 
-char TempMax()
+void TempMax()
 {
-      char MaxT;
+      char *MaxT;
       UART1_Write_Text("Temperatura Maxima: <Enter para enviar>\n");
       if (UART1_Data_Ready() == 1) {
         UART1_Read_Text(MaxT, "\r", 10);
         UART1_Write_Text(MaxT);
       }
-      return MaxT;
 }
 
-char TempMin()
+void TempMin()
 {
-      char MinT;
+      char *MinT;
       UART1_Write_Text("Temperatura Minima: <Enter para enviar>\n");
       if (UART1_Data_Ready() == 1) {
+        UART1_Write_Text("data ready");
         UART1_Read_Text(MinT, "\r", 10);
         UART1_Write_Text(MinT);
       }
-      return MinT;
 }
 
 
@@ -238,6 +232,7 @@ void main()
  CMCON |=7;
  ADCON1 = 0x0D;
  
+ //OSCCON = 0xF0;
  PORTA = 0 ;
  TRISD = 0x00;
  TRISA = 0x03;
@@ -245,11 +240,13 @@ void main()
 
  Lcd_Init();                                    //Inicia o LCD
  UART1_Init(9600);
+ TRISD7_bit = 1;
+ //ANSD7_bit = 0;
  delay_ms(100);
  Lcd_Cmd(_LCD_CLEAR);                           //Limpa o LCD
  Lcd_Cmd(_LCD_CURSOR_OFF);                      //Desativa o cursor
  //Tmax = TempMax();
- Tmin = TempMin();
+ TempMin();
 
   do
   {

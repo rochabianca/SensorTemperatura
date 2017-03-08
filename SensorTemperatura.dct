@@ -5719,8 +5719,6 @@ time
 time_datetoepoch
 time_epochtodate
 time_jd1970
-tmax
-tmin
 tmr0h
 tmr0ie
 tmr0ie_bit

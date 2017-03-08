@@ -51,7 +51,7 @@ main
 		Div_8X8_U
 		Mul_16X16_U
 		Div_16X16_U
-		Atingiu_Limite
+		Limite_Padrao
 			Lcd_Out
 				Lcd_Cmd
 					Delay_1us

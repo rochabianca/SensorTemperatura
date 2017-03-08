@@ -1,6 +1,5 @@
-#line 1 "C:/Users/bianc_000/Documents/PIC/SensorTemperatura-master-1/SensorTemperatura.c"
-#line 1 "c:/users/bianc_000/documents/mikroelektronika/mikroc pro for pic/include/stdio.h"
-#line 4 "C:/Users/bianc_000/Documents/PIC/SensorTemperatura-master-1/SensorTemperatura.c"
+#line 1 "C:/Users/bianc/Documents/PIC/SensorTemperatura/SensorTemperatura.c"
+
 sbit LCD_RS at LATB4_bit;
 sbit LCD_EN at LATB5_bit;
 sbit LCD_D4 at LATB0_bit;
@@ -27,13 +26,10 @@ unsigned temp;
 
 
 
-
-
 char family_code;
 char family_code_hex[2];
 
 char *text = "00.00";
-char Tmax, *Tmin = "23";
 char sernum[8];
 char sernum_hex[2];
 int i;
@@ -139,7 +135,7 @@ void Atingiu_Limite(char *text, char *min)
  Lcd_Out(2,1, "Min. Atingido");
 
  }
-#line 147 "C:/Users/bianc_000/Documents/PIC/SensorTemperatura-master-1/SensorTemperatura.c"
+#line 142 "C:/Users/bianc/Documents/PIC/SensorTemperatura/SensorTemperatura.c"
  if(text[1] == '2' && text[2] == '9' || text[1] == '3')
  {
  Lcd_Out(2,1, "Max. Atingido");
@@ -195,7 +191,7 @@ void Display_Temperature()
  text[4] = temp_fraction/1000 + 48;
 
 
- Atingiu_Limite(text, Tmin);
+ Limite_Padrao(text);
 
  Lcd_Out(1, 7, text);
 
@@ -206,26 +202,25 @@ void Display_Temperature()
 char uart_rd[10];
 
 
-char TempMax()
+void TempMax()
 {
- char MaxT;
+ char *MaxT;
  UART1_Write_Text("Temperatura Maxima: <Enter para enviar>\n");
  if (UART1_Data_Ready() == 1) {
  UART1_Read_Text(MaxT, "\r", 10);
  UART1_Write_Text(MaxT);
  }
- return MaxT;
 }
 
-char TempMin()
+void TempMin()
 {
- char MinT;
+ char *MinT;
  UART1_Write_Text("Temperatura Minima: <Enter para enviar>\n");
  if (UART1_Data_Ready() == 1) {
+ UART1_Write_Text("data ready");
  UART1_Read_Text(MinT, "\r", 10);
  UART1_Write_Text(MinT);
  }
- return MinT;
 }
 
 
@@ -234,6 +229,7 @@ void main()
  CMCON |=7;
  ADCON1 = 0x0D;
 
+
  PORTA = 0 ;
  TRISD = 0x00;
  TRISA = 0x03;
@@ -241,11 +237,13 @@ void main()
 
  Lcd_Init();
  UART1_Init(9600);
+ TRISD7_bit = 1;
+
  delay_ms(100);
  Lcd_Cmd(_LCD_CLEAR);
  Lcd_Cmd(_LCD_CURSOR_OFF);
 
- Tmin = TempMin();
+ TempMin();
 
  do
  {
