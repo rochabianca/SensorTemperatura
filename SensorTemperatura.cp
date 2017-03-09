@@ -16,7 +16,6 @@ sbit LCD_D7_Direction at TRISB3_bit;
 
 
 
-
 const unsigned short TEMP_RES_B = 12;
 const unsigned short TEMP_RES_S = 9;
 unsigned short TEMP_RESOLUTION;
@@ -30,11 +29,11 @@ char family_code;
 char family_code_hex[2];
 
 char *text = "00.00";
+char *MinT = "00,00";
 char sernum[8];
 char sernum_hex[2];
 int i;
 int colona;
- char *MinT = "00,00";
 
 void Resolution()
 {
@@ -67,7 +66,6 @@ void Resolution()
  break;
  }
 
-
  Ow_Reset(&PORTE, 2);
  Ow_Write(&PORTE, 2, 0x33);
  Delay_us(120);
@@ -92,19 +90,6 @@ void Read_Temperature()
 
  temp = Ow_Read(&PORTE, 2);
  temp = (Ow_Read(&PORTE, 2) << 8) + temp;
-}
-
-void Display_SerialNumber()
-{
- int i;
- colona = 17;
-
- for(i = 0; i <= 7; i++)
- {
- colona = colona - 2;
- ByteToHex(sernum[i], sernum_hex);
- Lcd_Out(1, colona, sernum_hex);
- }
 }
 
 void Display_Type()
@@ -136,12 +121,14 @@ void Atingiu_Limite(char *text, char *min)
 
  }
 
- if(text[1] == min[2] && text[2] == '9' || text[1] == min[3])
+ if(text[1] == min[3] && text[2] == min[4])
  {
  Lcd_Out(2,1, "Max. Atingido");
 
  }
 }
+
+
 
 void Limite_Padrao(char *text)
 {
@@ -200,84 +187,31 @@ void Display_Temperature()
  Lcd_Chr_CP('C');
 }
 
-char uart_rd[10];
-
-
-void TempMax()
-{
- char *MaxT;
- UART1_Write_Text("Temperatura Maxima: <Enter para enviar>\n");
- if (UART1_Data_Ready() == 1) {
- UART1_Read_Text(MaxT, "\r", 10);
- UART1_Write_Text(MaxT);
- }
-}
-
-void TempMin()
-{
- char *MinT;
- UART1_Write_Text("Temperatura Minima: <Enter para enviar>\n");
- if (UART1_Data_Ready() == 1) {
- UART1_Write_Text("data ready");
- UART1_Read_Text(MinT, "\r", 10);
- UART1_Write_Text(MinT);
- }
-}
-char valor[100];
-
-void teste()
- {
- UART1_Write(10);
- UART1_Write(13);
-
-
- if (UART1_Data_Ready()) {
- UART1_Write_Text("entrou em teste()");
- uart1_read_text(valor, "\r", 16);
- lcd_cmd(_LCD_CLEAR);
- lcd_out(1,1,valor);
-#line 241 "C:/Users/bianc_000/Documents/PIC/SensorTemperatura/SensorTemperatura.c"
- }
-
- }
-
 
 void main()
 {
  UART1_Init(9600);
  delay_ms(100);
-
  ADCON1 = 0x0D;
-
-
-
-
  PORTA = 0 ;
-
  TRISA = 0x03;
-
-
  TRISE.B2 = 1;
 
-
-
  Lcd_Init();
-
-
-
  delay_ms(100);
+
  Lcd_Cmd(_LCD_CLEAR);
  Lcd_Cmd(_LCD_CURSOR_OFF);
 
-
  UART1_Write_Text("Temperaturas Minima e maxima: <exemplo: 16,21. enter para enviar>");
+ UART1_Write_Text(10);
+ UART1_Write_Text(13);
 
  do
  {
  Resolution();
  Display_Type();
  if (UART1_Data_Ready() == 1) {
-
  UART1_Read_Text(MinT, "\r", 10);
  UART1_Write_Text(MinT);
  }

@@ -2455,7 +2455,6 @@ dir__bit
 display
 display
 display
-display_serialnumber
 display_temperature
 display_type
 div
@@ -5556,9 +5555,6 @@ temp
 temp_res_b
 temp_res_s
 temp_resolution
-tempmax
-tempmin
-teste
 text
 tft_16bit_circle
 tft_16bit_color16bittorgb
@@ -5946,7 +5942,6 @@ ua
 ua_bit
 uaddr
 uart_data_ready
-uart_rd
 uart_rd_ptr
 uart_rdy_ptr
 uart_read
@@ -6026,7 +6021,6 @@ utrdis_bit
 val
 val
 val
-valor
 vcfg0
 vcfg0_bit
 vcfg1
