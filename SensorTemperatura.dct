@@ -2109,6 +2109,7 @@ bmphandlecfg
 bmphandlecfg
 bor
 bor_bit
+botao
 brg16
 brg16_bit
 brgh

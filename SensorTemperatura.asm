@@ -102,10 +102,10 @@ L_Resolution9:
 	XORWF       _i+1, 0 
 	SUBWF       R0, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__Resolution54
+	GOTO        L__Resolution55
 	MOVF        _i+0, 0 
 	SUBLW       7
-L__Resolution54:
+L__Resolution55:
 	BTFSS       STATUS+0, 0 
 	GOTO        L_Resolution10
 	MOVLW       _sernum+0
@@ -320,7 +320,7 @@ _Atingiu_Limite:
 	XORWF       POSTINC2+0, 0 
 	BTFSS       STATUS+0, 2 
 	GOTO        L_Atingiu_Limite20
-L__Atingiu_Limite48:
+L__Atingiu_Limite49:
 	MOVLW       2
 	MOVWF       FARG_Lcd_Out_row+0 
 	MOVLW       1
@@ -365,7 +365,7 @@ L_Atingiu_Limite20:
 	XORWF       POSTINC2+0, 0 
 	BTFSS       STATUS+0, 2 
 	GOTO        L_Atingiu_Limite23
-L__Atingiu_Limite47:
+L__Atingiu_Limite48:
 	MOVLW       2
 	MOVWF       FARG_Lcd_Out_row+0 
 	MOVLW       1
@@ -391,7 +391,7 @@ _Limite_Padrao:
 	MOVF        POSTINC0+0, 0 
 	XORLW       50
 	BTFSS       STATUS+0, 2 
-	GOTO        L__Limite_Padrao52
+	GOTO        L__Limite_Padrao53
 	MOVLW       2
 	ADDWF       FARG_Limite_Padrao_text+0, 0 
 	MOVWF       FSR0 
@@ -401,9 +401,9 @@ _Limite_Padrao:
 	MOVF        POSTINC0+0, 0 
 	XORLW       49
 	BTFSS       STATUS+0, 2 
+	GOTO        L__Limite_Padrao53
 	GOTO        L__Limite_Padrao52
-	GOTO        L__Limite_Padrao51
-L__Limite_Padrao52:
+L__Limite_Padrao53:
 	MOVLW       1
 	ADDWF       FARG_Limite_Padrao_text+0, 0 
 	MOVWF       FSR0 
@@ -413,9 +413,9 @@ L__Limite_Padrao52:
 	MOVF        POSTINC0+0, 0 
 	XORLW       49
 	BTFSC       STATUS+0, 2 
-	GOTO        L__Limite_Padrao51
+	GOTO        L__Limite_Padrao52
 	GOTO        L_Limite_Padrao28
-L__Limite_Padrao51:
+L__Limite_Padrao52:
 	MOVLW       2
 	MOVWF       FARG_Lcd_Out_row+0 
 	MOVLW       1
@@ -435,7 +435,7 @@ L_Limite_Padrao28:
 	MOVF        POSTINC0+0, 0 
 	XORLW       50
 	BTFSS       STATUS+0, 2 
-	GOTO        L__Limite_Padrao50
+	GOTO        L__Limite_Padrao51
 	MOVLW       2
 	ADDWF       FARG_Limite_Padrao_text+0, 0 
 	MOVWF       FSR0 
@@ -445,9 +445,9 @@ L_Limite_Padrao28:
 	MOVF        POSTINC0+0, 0 
 	XORLW       57
 	BTFSS       STATUS+0, 2 
+	GOTO        L__Limite_Padrao51
 	GOTO        L__Limite_Padrao50
-	GOTO        L__Limite_Padrao49
-L__Limite_Padrao50:
+L__Limite_Padrao51:
 	MOVLW       1
 	ADDWF       FARG_Limite_Padrao_text+0, 0 
 	MOVWF       FSR0 
@@ -457,9 +457,9 @@ L__Limite_Padrao50:
 	MOVF        POSTINC0+0, 0 
 	XORLW       51
 	BTFSC       STATUS+0, 2 
-	GOTO        L__Limite_Padrao49
+	GOTO        L__Limite_Padrao50
 	GOTO        L_Limite_Padrao33
-L__Limite_Padrao49:
+L__Limite_Padrao50:
 	MOVLW       2
 	MOVWF       FARG_Lcd_Out_row+0 
 	MOVLW       1
@@ -506,14 +506,14 @@ L_Display_Temperature34:
 	MOVF        Display_Temperature_temp2write_L0+1, 0 
 	MOVWF       R1 
 	MOVF        R2, 0 
-L__Display_Temperature60:
-	BZ          L__Display_Temperature61
+L__Display_Temperature61:
+	BZ          L__Display_Temperature62
 	RRCF        R1, 1 
 	RRCF        R0, 1 
 	BCF         R1, 7 
 	ADDLW       255
-	GOTO        L__Display_Temperature60
-L__Display_Temperature61:
+	GOTO        L__Display_Temperature61
+L__Display_Temperature62:
 	MOVF        R0, 0 
 	MOVWF       Display_Temperature_temp_whole_L0+0 
 	MOVLW       100
@@ -589,14 +589,14 @@ L_Display_Temperature35:
 	MOVF        Display_Temperature_temp2write_L0+1, 0 
 	MOVWF       R1 
 	MOVF        R2, 0 
-L__Display_Temperature62:
-	BZ          L__Display_Temperature63
+L__Display_Temperature63:
+	BZ          L__Display_Temperature64
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	RLCF        R1, 1 
 	ADDLW       255
-	GOTO        L__Display_Temperature62
-L__Display_Temperature63:
+	GOTO        L__Display_Temperature63
+L__Display_Temperature64:
 	MOVLW       15
 	ANDWF       R0, 1 
 	MOVLW       0
@@ -679,6 +679,7 @@ L_main36:
 	MOVLW       3
 	MOVWF       TRISA+0 
 	BSF         TRISE+0, 2 
+	BSF         TRISB+0, 7 
 	CALL        _Lcd_Init+0, 0
 	MOVLW       2
 	MOVWF       R11, 0
@@ -740,33 +741,39 @@ L_main38:
 	MOVWF       FARG_UART1_Write_Text_uart_text+1 
 	CALL        _UART1_Write_Text+0, 0
 L_main41:
+	BTFSS       PORTB+0, 7 
 	GOTO        L_main42
-L_main44:
-	CALL        _Read_Temperature+0, 0
-	CALL        _Display_Temperature+0, 0
+	MOVLW       1
+	MOVWF       FARG_Lcd_Cmd_out_char+0 
+	CALL        _Lcd_Cmd+0, 0
+L_main42:
 	GOTO        L_main43
 L_main45:
-	GOTO        L_main43
-L_main42:
+	CALL        _Read_Temperature+0, 0
+	CALL        _Display_Temperature+0, 0
+	GOTO        L_main44
+L_main46:
+	GOTO        L_main44
+L_main43:
 	MOVF        _family_code+0, 0 
 	XORLW       40
 	BTFSC       STATUS+0, 2 
-	GOTO        L_main44
 	GOTO        L_main45
-L_main43:
+	GOTO        L_main46
+L_main44:
 	MOVLW       2
 	MOVWF       R11, 0
 	MOVLW       4
 	MOVWF       R12, 0
 	MOVLW       186
 	MOVWF       R13, 0
-L_main46:
+L_main47:
 	DECFSZ      R13, 1, 1
-	BRA         L_main46
+	BRA         L_main47
 	DECFSZ      R12, 1, 1
-	BRA         L_main46
+	BRA         L_main47
 	DECFSZ      R11, 1, 1
-	BRA         L_main46
+	BRA         L_main47
 	NOP
 	GOTO        L_main38
 L_end_main:

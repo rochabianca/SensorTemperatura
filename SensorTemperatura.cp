@@ -14,6 +14,8 @@ sbit LCD_D5_Direction at TRISB1_bit;
 sbit LCD_D6_Direction at TRISB2_bit;
 sbit LCD_D7_Direction at TRISB3_bit;
 
+sbit Botao at PORTB.B7;
+
 
 
 const unsigned short TEMP_RES_B = 12;
@@ -187,7 +189,6 @@ void Display_Temperature()
  Lcd_Chr_CP('C');
 }
 
-
 void main()
 {
  UART1_Init(9600);
@@ -196,6 +197,7 @@ void main()
  PORTA = 0 ;
  TRISA = 0x03;
  TRISE.B2 = 1;
+ TRISB.B7 = 1;
 
  Lcd_Init();
  delay_ms(100);
@@ -214,6 +216,9 @@ void main()
  if (UART1_Data_Ready() == 1) {
  UART1_Read_Text(MinT, "\r", 10);
  UART1_Write_Text(MinT);
+ }
+ if(Botao == 1) {
+ Lcd_Cmd(_LCD_CLEAR);
  }
 
  switch( family_code )
